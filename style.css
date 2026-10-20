@@ -1,0 +1,174 @@
+/* CSS is a list of RULES. Each rule has:
+   - a selector (WHAT to style), like "body"
+   - properties inside { } (HOW to style it), like "color: red;" */
+
+/* Variables: names for colors, so we can change them in one place. */
+:root {
+  --sea: #0b4f6c;      /* deep sea blue */
+  --foam: #f2f8f8;    /* pale sea-foam white */
+  --sand: #e8c27a;    /* beach sand */
+  --flamingo: #e5707f; /* flamingo pink, from the salt flats */
+  --ink: #12262e;     /* dark text color */
+}
+
+/* "*" means every element. box-sizing makes sizes easier to predict. */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;                      /* remove the default space around the page */
+  font-family: Georgia, serif;    /* the font; serif = letters with small feet */
+  background: var(--foam);        /* var(--foam) uses the color we named above */
+  color: var(--ink);              /* text color */
+  line-height: 1.6;               /* space between lines of text */
+}
+
+/* HEADER and MENU */
+header {
+  display: flex;                  /* put the children side by side */
+  justify-content: space-between; /* logo on the left, menu on the right */
+  align-items: center;
+  flex-wrap: wrap;                /* on a small phone, allow a second line */
+  gap: 12px;
+  padding: 16px 24px;
+  background: var(--sea);
+}
+
+header a {
+  color: white;
+  text-decoration: none;          /* remove the underline from links */
+}
+
+.logo {                           /* a dot "." selects a class name */
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+nav a { margin-left: 18px; }
+nav a:hover { color: var(--sand); } /* :hover = when the mouse is over it */
+
+/* HERO: the big opening area */
+.hero {
+  position: relative;      /* lets the waves be placed inside this block */
+  overflow: hidden;        /* hide anything that goes outside the block */
+  padding: 96px 24px 170px; /* extra space at the bottom for the waves */
+  text-align: center;
+  color: white;
+  /* the sea: deep blue at the top, light turquoise near the beach */
+  background: linear-gradient(180deg, var(--sea) 0%, #2f8fb0 55%, #7fcfd8 100%);
+}
+
+/* ::before and ::after create extra decoration layers inside .hero.
+   Each layer is a wavy shape drawn with SVG (a simple drawing format),
+   repeated sideways again and again with "repeat-x". */
+
+/* Layer 1: the white foam wave, moving slowly */
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 100%;
+  height: 120px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C100 20 200 20 300 60 S500 100 600 60 S800 20 900 60 S1100 100 1200 60 V120 H0 Z' fill='white' fill-opacity='0.6'/%3E%3C/svg%3E") repeat-x;
+  background-size: 800px 100%;
+  animation: drift 14s linear infinite; /* move the wave sideways, forever */
+}
+
+/* Layer 2: the sandy beach, with a soft wavy edge where the sea ends */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 80px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 60 C100 20 200 20 300 60 S500 100 600 60 S800 20 900 60 S1100 100 1200 60 V120 H0 Z' fill='%23e8c27a'/%3E%3C/svg%3E") repeat-x;
+  background-size: 1200px 100%;
+}
+
+/* @keyframes describes the movement: slide the picture left by 800px */
+@keyframes drift {
+  to { background-position-x: -800px; }
+}
+
+/* Some people turn off motion in their device settings. We respect that. */
+@media (prefers-reduced-motion: reduce) {
+  .hero::before { animation: none; }
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  font-size: clamp(2.5rem, 8vw, 5rem); /* big, but smaller on phones */
+}
+
+.hero p {
+  margin: 0 auto 28px;
+  max-width: 32ch;                /* "ch" = about one letter; keeps lines short */
+  font-size: 1.25rem;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 999px;           /* fully rounded ends */
+  background: var(--flamingo);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* INTRO text */
+.intro {
+  max-width: 640px;               /* stop text from getting too wide */
+  margin: 0 auto;                 /* auto left and right = centered */
+  padding: 56px 24px;
+}
+
+.intro h2 { color: var(--sea); }
+
+/* FOOTER */
+footer {
+  padding: 24px;
+  text-align: center;
+  background: var(--sand);
+}
+
+/* PAGE TITLE (used on inner pages) */
+.page-title {
+  padding: 56px 24px 16px;
+  text-align: center;
+}
+.page-title h1 { margin: 0 0 8px; color: var(--sea); }
+
+/* PHOTO GALLERY */
+.gallery {
+  display: grid;  /* a grid puts items in rows and columns */
+  /* as many columns as fit, each at least 240px wide, all sharing the space */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  object-fit: cover;          /* fill the box and crop the edges, no stretching */
+  border-radius: 12px;
+  background: #cfe6ea;        /* light color shown if a photo is missing */
+  transition: transform 0.3s; /* make the zoom smooth */
+}
+
+.gallery a { display: block; overflow: hidden; border-radius: 12px; }
+.gallery a:hover img { transform: scale(1.06); } /* zoom in slightly on hover */
+
+/* TEXT BLOCK on inner pages */
+.text-block {
+  max-width: 640px;        /* keep lines short and easy to read */
+  margin: 0 auto;          /* center the block */
+  padding: 8px 24px 24px;  /* space: top, left and right, bottom */
+}
+
+.text-block h2 { color: var(--sea); }
