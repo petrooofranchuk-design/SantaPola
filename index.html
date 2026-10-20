@@ -43,7 +43,14 @@
       background: var(--sea);
     }
     header a { color: white; text-decoration: none; }
-    .logo { font-size: 1.4rem; font-weight: bold; }
+    .logo {
+      display: inline-flex;       /* put the mark and the name side by side */
+      align-items: center;
+      gap: 10px;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+    .logo-mark { width: 46px; height: 46px; }
     /* The menu fills the free space in the top bar and spreads the links out evenly */
     nav {
       display: flex;
@@ -59,7 +66,7 @@
     }
     @media (max-width: 700px) {
       header { justify-content: center; }
-      .logo { width: 100%; text-align: center; }
+      .logo { width: 100%; justify-content: center; }
       nav { flex-basis: 100%; }
       nav a { font-size: 1.1rem; padding: 6px 10px; }
     }
@@ -71,7 +78,7 @@
     }
 
     /* Sections the menu jumps to: leave room under the sticky menu */
-    section { scroll-margin-top: 70px; }
+    section { scroll-margin-top: 90px; }
 
     /* HOME: sea, waves and beach */
     .hero {
@@ -102,7 +109,19 @@
     @keyframes drift { to { background-position-x: -800px; } }
     @media (prefers-reduced-motion: reduce) { .hero::before { animation: none; } }
 
-    .hero h1 { margin: 0 0 12px; font-size: clamp(2.5rem, 8vw, 5rem); }
+    .hero h1 {
+      display: inline-block;            /* the color gradient fits the width of the words */
+      margin: 0 0 12px;
+      font-size: clamp(3.5rem, 13vw, 8rem);   /* much bigger than before */
+      line-height: 1.05;
+      /* the gradient (sun yellow to flamingo pink) is cut to the shape of the letters */
+      background: linear-gradient(90deg, #ffd84d, #ff8fa3);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));  /* soft shadow behind the letters */
+    }
     .hero p { margin: 0 auto 28px; max-width: 50ch; font-size: 1.55rem; color: #ffd84d; }
     /* STARS and SHOOTING STARS in the home section */
     .sky { position: absolute; inset: 0; pointer-events: none; }
@@ -166,6 +185,8 @@
 
     /* FOOD: yellow outline drawings behind the text */
     .food-bg, .sports-bg { position: relative; overflow: hidden; min-height: 420px; }
+    .food-bg { min-height: 480px; }
+    .food-bg .text-block { padding: 200px 24px 90px; }
     .food-bg .text-block, .sports-bg .text-block { position: relative; z-index: 1; } /* text above drawings */
     .food-art, .sports-art { position: absolute; inset: 0; pointer-events: none; }
     .food-art svg, .sports-art svg {
@@ -179,10 +200,9 @@
       stroke-linejoin: round;
       opacity: 0.55;             /* soft, so the text stays easy to read */
     }
-    .art-paella   { left: 4%;  top: 8%;     transform: rotate(-8deg); }
-    .art-churros  { right: 5%; top: 6%;     transform: rotate(8deg); }
-    .art-jamon    { left: 8%;  bottom: 6%;  transform: rotate(6deg); }
-    .art-tortilla { right: 9%; bottom: 8%;  transform: rotate(-6deg); }
+    /* the paella is a full-color picture, so it has its own look */
+    .food-art .art-paella { left: 4%; top: 4%; width: 160px; height: 160px; opacity: 0.95; stroke: none; transform: rotate(-8deg); }
+    .food-art .art-churros { right: 4%; top: 6%; width: 210px; height: 110px; opacity: 0.95; stroke: none; transform: rotate(4deg); }
     @media (max-width: 600px) { .food-art svg, .sports-art svg { width: 90px; height: 90px; } }
 
     /* SPORTS: same idea as food, but orange lines */
@@ -190,25 +210,28 @@
     .art-paddle { left: 5%;  top: 6%;     transform: rotate(-6deg); }
     .art-pickle { right: 6%; top: 8%;     transform: rotate(10deg); }
     .art-volley { left: 8%;  bottom: 6%;  transform: rotate(8deg); }
-    /* SPORTS: strong people exercising and playing football */
-    .sports-bg { min-height: 580px; }
-    .sports-bg .text-block { padding: 160px 24px 160px; }
-    .art-pullup   { left: 2%;  top: 36%; }
-    .art-pushup   { right: 2%; top: 36%; }
+    /* SPORTS: strong people exercising */
+    .sports-bg { min-height: 660px; }
+    .sports-bg .text-block { padding: 210px 24px 210px; }
+    .art-pullup   { left: 50%; top: 4%; transform: translateX(-50%); }   /* top, in the middle */
+    .art-pushup   { right: 2%; top: 46%; }   /* moved down */
     .art-situp    { left: 28%; bottom: 3%; }
-    .art-football { left: 46%; bottom: 3%; }
     .sports-art .art-volley { opacity: 0.95; width: 140px; height: 140px; } /* the colored ball */
     /* Colored sports items: stronger than the faint orange outlines */
     .sports-art .art-paddle, .sports-art .art-pickle, .sports-art .art-net { opacity: 0.95; }
     .sports-art .art-net { right: 4%; bottom: 6%; width: 230px; height: 115px; } /* longer net */
     @media (max-width: 600px) {
       .sports-art .art-net { width: 150px; height: 75px; }
-      .sports-bg .text-block { padding: 120px 24px 120px; }
+      .sports-bg .text-block { padding: 150px 24px 150px; }
+      .art-pushup { display: none; } /* no room beside the text on a phone */
+      .food-bg .text-block { padding: 150px 24px 70px; }
+      .food-art .art-paella { width: 100px; height: 100px; }
+      .food-art .art-churros { width: 150px; height: 79px; }
     }
 
     /* WATER: waves on top, sand at the bottom, corals and fish */
-    .water-bg { position: relative; overflow: hidden; min-height: 520px; }
-    .water-bg .text-block { position: relative; z-index: 1; padding: 120px 24px 140px; }
+    .water-bg { position: relative; overflow: hidden; min-height: 620px; }
+    .water-bg .text-block { position: relative; z-index: 1; padding: 210px 24px 240px; }
     .water-art { position: absolute; inset: 0; pointer-events: none; }
     .water-art svg { position: absolute; }
     .waves { left: 0; top: 0; width: 100%; height: 80px; }
@@ -223,35 +246,43 @@
     .coral-7 { right: 26%; bottom: 24px; width: 95px; height: 95px; }
     .coral-8 { right: 35%; bottom: 16px; width: 70px; height: 70px; }
     .fish { width: 150px; height: 64px; opacity: 0.9; }   /* bigger and longer fish */
-    .fish-1 { left: 3%;  top: 30%; }
-    .fish-2 { right: 3%; top: 42%; transform: scaleX(-1); } /* flipped: swims left */
-    .fish-3 { left: 9%;  top: 54%; transform: scale(0.85); }
+    /* fish swim in the free bands above and below the text */
+    .fish-1 { left: 3%;  top: 100px; }
+    .fish-2 { right: 3%; top: 125px; transform: scaleX(-1); } /* flipped: swims left */
+    .fish-3 { left: 36%; bottom: 150px; transform: scale(0.85); }
+
+    /* A crab walking sideways and a starfish resting on the sand */
+    .crab     { left: 42%; bottom: 20px; width: 90px; height: 63px; animation: walk 9s ease-in-out infinite alternate; }
+    .starfish { left: 57%; bottom: 12px; width: 56px; height: 56px; transform: rotate(15deg); }
+    @keyframes walk { from { transform: translateX(-40px); } to { transform: translateX(40px); } }
+    @media (prefers-reduced-motion: reduce) { .crab { animation: none; } }
     @media (max-width: 600px) {
       .fish { width: 90px; height: 38px; opacity: 0.5; }
       .coral { width: 55px; height: 55px; }
+      .crab { width: 60px; height: 42px; }
+      .starfish { width: 38px; height: 38px; }
     }
 
-    /* BEACHES: dark pink people behind the text */
+    /* BEACHES: colorful people behind the text */
     .beaches-bg { position: relative; overflow: hidden; }
-    .beaches-bg .text-block { position: relative; z-index: 1; padding: 170px 24px 130px; }
+    .beaches-bg .text-block { position: relative; z-index: 1; padding: 220px 24px 180px; }
     .beaches-art { position: absolute; inset: 0; pointer-events: none; }
     .beaches-art svg {
       position: absolute;
-      color: #b83a5c;            /* dark pink: shapes use "currentColor" */
-      fill: none;
-      stroke: currentColor;
+      fill: none;                /* each part has its own color in the drawing */
+      stroke: none;
       stroke-linecap: round;
       stroke-linejoin: round;
-      opacity: 0.75;
+      opacity: 0.95;
     }
     .b-umbrella { left: 3%;   top: 5%;     width: 190px; height: 163px; }
-    .b-reader   { right: 4%;  top: 7%;     width: 160px; height: 133px; }
-    .b-towel    { left: 6%;   bottom: 6%;  width: 160px; height: 80px; }
+    .b-reader   { right: 4%;  top: 7%;     width: 180px; height: 133px; }
+    .b-towel    { left: 6%;   bottom: 6%;  width: 200px; height: 80px; }
     .b-jumper   { left: 44%;  bottom: 4%;  width: 90px;  height: 90px; }
     .b-runner   { right: 7%;  bottom: 5%;  width: 110px; height: 110px; }
     @media (max-width: 600px) {
-      .beaches-art svg { width: 90px; height: 75px; opacity: 0.4; }
-      .beaches-bg .text-block { padding: 120px 24px 100px; }
+      .beaches-art svg { width: 90px; height: 75px; opacity: 0.6; }
+      .beaches-bg .text-block { padding: 150px 24px 130px; }
     }
 
     /* PHOTO GALLERY */
@@ -282,7 +313,17 @@
 <body>
 
   <header>
-    <a class="logo" href="#home">Santa Pola</a>
+    <a class="logo" href="#home">
+      <!-- The logo mark: a round badge with a sun over two waves.
+           One color only: "currentColor" uses the text color (white). -->
+      <svg class="logo-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="24" cy="24" r="21" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M12 26 A12 12 0 0 1 36 26 Z" fill="currentColor"/>
+        <path d="M24 7 V11 M10.5 13 L13.5 16 M37.5 13 L34.5 16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M10 32 q3.5 -3.5 7 0 t7 0 t7 0 t7 0 M10 38 q3.5 -3.5 7 0 t7 0 t7 0 t7 0" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span>Santa Pola</span>
+    </a>
     <nav>
       <!-- href="#beaches" means: scroll to the element with id="beaches" -->
       <a href="#home">Home</a>
@@ -348,46 +389,111 @@
 
     <!-- BEACHES -->
     <section id="beaches" class="beaches-bg">
-      <!-- Dark pink people on the beach, behind the text:
+      <!-- People on the beach, behind the text:
            umbrella, reading in a chair, lying on a towel, running, jumping. -->
       <div class="beaches-art" aria-hidden="true">
         <svg class="b-umbrella" viewBox="0 0 140 120">
-          <path d="M8 50 A62 42 0 0 1 132 50 Z" fill="currentColor" stroke="none"/>
-          <path d="M70 8 Q50 28 42 50 M70 8 Q90 28 98 50" stroke="#fff" stroke-width="2" opacity="0.6"/>
-          <path d="M70 8 V110 M6 110 H134" stroke-width="3"/>
-          <circle cx="44" cy="80" r="6" fill="currentColor" stroke="none"/>
-          <path d="M44 87 V102" stroke-width="8"/>
-          <path d="M44 102 H62" stroke-width="7"/>
-          <circle cx="98" cy="80" r="6" fill="currentColor" stroke="none"/>
-          <path d="M98 87 V102" stroke-width="8"/>
-          <path d="M98 102 H80" stroke-width="7"/>
+          <defs><clipPath id="umb-clip"><path d="M8 50 A62 42 0 0 1 132 50 Z"/></clipPath></defs>
+          <!-- colorful umbrella: six panels, cut to the round shape of the umbrella -->
+          <g clip-path="url(#umb-clip)">
+            <polygon points="70,8 -29,75 4,75" fill="#ff6f61"/>
+            <polygon points="70,8 4,75 38,75" fill="#ffd84d"/>
+            <polygon points="70,8 38,75 70,75" fill="#2aa6a6"/>
+            <polygon points="70,8 70,75 102,75" fill="#ff6f61"/>
+            <polygon points="70,8 102,75 136,75" fill="#ffd84d"/>
+            <polygon points="70,8 136,75 169,75" fill="#2aa6a6"/>
+          </g>
+          <path d="M70 8 V110" stroke="#8a5a2b" stroke-width="3"/>
+          <circle cx="70" cy="6" r="3" fill="#ffd84d"/>
+          <path d="M6 110 H134" stroke="#e8c27a" stroke-width="5"/>
+          <!-- person on the left -->
+          <path d="M44 87 V102" stroke="#ff9f1c" stroke-width="8"/>
+          <path d="M44 102 H62" stroke="#c68642" stroke-width="7"/>
+          <path d="M44 102 H52" stroke="#2a5db0" stroke-width="8"/>
+          <circle cx="44" cy="80" r="6" fill="#c68642"/>
+          <path d="M38 79 A6 6 0 0 1 50 79 Z" fill="#12262e"/>
+          <!-- person on the right -->
+          <path d="M98 87 V102" stroke="#f08aa0" stroke-width="8"/>
+          <path d="M98 102 H80" stroke="#e8b48a" stroke-width="7"/>
+          <path d="M98 102 H90" stroke="#2a5db0" stroke-width="8"/>
+          <circle cx="98" cy="80" r="6" fill="#e8b48a"/>
+          <path d="M92 79 A6 6 0 0 1 104 79 Z" fill="#6b3e1a"/>
         </svg>
-        <svg class="b-reader" viewBox="0 0 120 100">
-          <path d="M12 42 L46 78 H102 M46 78 V94 M102 78 V94" stroke-width="4"/>
-          <circle cx="24" cy="46" r="7" fill="currentColor" stroke="none"/>
-          <path d="M31 53 L52 72" stroke-width="9"/>
-          <path d="M52 72 H84" stroke-width="8"/>
-          <path d="M84 72 L96 88" stroke-width="7"/>
-          <path d="M40 58 L60 56" stroke-width="4"/>
-          <path d="M58 46 L76 50 L74 62 L56 58 Z" fill="currentColor" stroke-width="2"/>
+        <svg class="b-reader" viewBox="0 0 135 100">
+          <!-- lounger -->
+          <path d="M12 42 L46 78 H102" stroke="#2aa6a6" stroke-width="5"/>
+          <path d="M46 78 V94 M102 78 V94" stroke="#8a5a2b" stroke-width="4"/>
+          <!-- person: pink top, blue shorts -->
+          <path d="M52 72 H84" stroke="#8d5524" stroke-width="8"/>
+          <path d="M52 72 H68" stroke="#2a5db0" stroke-width="9"/>
+          <path d="M84 72 L96 88" stroke="#8d5524" stroke-width="7"/>
+          <path d="M96 90 H104" stroke="#ffd84d" stroke-width="4"/>
+          <path d="M31 53 L52 72" stroke="#f08aa0" stroke-width="9"/>
+          <path d="M40 58 L60 56" stroke="#8d5524" stroke-width="4"/>
+          <circle cx="24" cy="46" r="7" fill="#8d5524"/>
+          <path d="M17 45 A7 7 0 0 1 31 45 Z" fill="#12262e"/>
+          <rect x="26" y="44.5" width="8" height="3.2" rx="1.2" fill="#12262e"/>
+          <!-- red book -->
+          <path d="M58 46 L76 50 L74 62 L56 58 Z" fill="#d62839"/>
+          <path d="M60 49 L74 53" stroke="#fff" stroke-width="1.5"/>
+          <!-- drinks in the sand: a green bottle and an orange juice -->
+          <path d="M108 95 H134" stroke="#e8c27a" stroke-width="3"/>
+          <rect x="112" y="78" width="8" height="16" rx="2.5" fill="#2fa84f"/>
+          <rect x="114" y="72" width="4" height="7" fill="#2fa84f"/>
+          <rect x="113.5" y="70" width="5" height="3" rx="1" fill="#d62839"/>
+          <rect x="124" y="82" width="8" height="12" rx="2.5" fill="#ff9f1c"/>
+          <rect x="126" y="77" width="4" height="6" fill="#ff9f1c"/>
+          <rect x="125.5" y="75" width="5" height="3" rx="1" fill="#d62839"/>
         </svg>
-        <svg class="b-towel" viewBox="0 0 120 60">
-          <rect x="6" y="44" width="108" height="8" rx="3" fill="currentColor" fill-opacity="0.35" stroke="none"/>
-          <circle cx="20" cy="34" r="6" fill="currentColor" stroke="none"/>
-          <path d="M30 38 H78 L90 28 L98 38" stroke-width="7"/>
+        <svg class="b-towel" viewBox="0 0 150 60">
+          <!-- striped towel -->
+          <rect x="6" y="44" width="108" height="8" rx="3" fill="#2aa6a6"/>
+          <path d="M24 48 H96" stroke="#fff" stroke-width="1.5" opacity="0.8"/>
+          <!-- person lying down: orange top, blue shorts -->
+          <path d="M30 38 H78 L90 28 L98 38" stroke="#e8b48a" stroke-width="7"/>
+          <path d="M32 38 H48" stroke="#ff9f1c" stroke-width="8"/>
+          <path d="M62 38 H78" stroke="#2a5db0" stroke-width="8"/>
+          <path d="M98 38 L104 36" stroke="#ffd84d" stroke-width="4"/>
+          <circle cx="20" cy="34" r="6" fill="#e8b48a"/>
+          <path d="M14 33 A6 6 0 0 1 26 33 Z" fill="#6b3e1a"/>
+          <rect x="21" y="32.5" width="7" height="3" rx="1.2" fill="#12262e"/>
+          <!-- drinks next to the towel -->
+          <path d="M120 53 H148" stroke="#e8c27a" stroke-width="3"/>
+          <rect x="124" y="32" width="9" height="20" rx="3" fill="#2fa84f"/>
+          <rect x="126.5" y="25" width="4" height="8" fill="#2fa84f"/>
+          <rect x="126" y="22.5" width="5" height="3" rx="1" fill="#d62839"/>
+          <rect x="137" y="38" width="9" height="14" rx="3" fill="#ff9f1c"/>
+          <rect x="139.5" y="32" width="4" height="7" fill="#ff9f1c"/>
+          <rect x="139" y="29.5" width="5" height="3" rx="1" fill="#d62839"/>
         </svg>
         <svg class="b-runner" viewBox="0 0 100 100">
-          <circle cx="58" cy="16" r="7" fill="currentColor" stroke="none"/>
-          <path d="M54 26 L46 56" stroke-width="8"/>
-          <path d="M52 32 L68 42 L76 34 M52 32 L38 44 L30 54" stroke-width="5"/>
-          <path d="M46 56 L64 68 L62 90 M46 56 L28 66 L12 60" stroke-width="6"/>
-          <path d="M4 30 H20 M2 42 H16" stroke-width="2.5"/>
+          <path d="M4 30 H20 M2 42 H16" stroke="#7a8b93" stroke-width="2.5"/>
+          <!-- legs, bright yellow running shoes, blue shorts -->
+          <path d="M46 56 L64 68 L62 90 M46 56 L28 66 L12 60" stroke="#c68642" stroke-width="6"/>
+          <path d="M57 92 H71" stroke="#ffd84d" stroke-width="6"/>
+          <path d="M57 95.5 H71" stroke="#12262e" stroke-width="2"/>
+          <path d="M13 60 L4 56" stroke="#ffd84d" stroke-width="6"/>
+          <path d="M46 56 L55 62 M46 56 L37 61" stroke="#2a5db0" stroke-width="9"/>
+          <!-- yellow shirt and arms -->
+          <path d="M52 32 L68 42 L76 34 M52 32 L38 44 L30 54" stroke="#c68642" stroke-width="5"/>
+          <path d="M54 26 L47 55" stroke="#f5c518" stroke-width="10"/>
+          <path d="M52 32 L58 36 M52 32 L45 38" stroke="#f5c518" stroke-width="7"/>
+          <!-- head with a red cap and sunglasses -->
+          <circle cx="58" cy="16" r="7" fill="#c68642"/>
+          <path d="M50 14 A8 8 0 0 1 66 14 Z" fill="#d62839"/>
+          <path d="M62 12.5 H75 L73 16 H62 Z" fill="#d62839"/>
+          <rect x="59" y="15" width="10" height="3.6" rx="1.6" fill="#12262e"/>
         </svg>
         <svg class="b-jumper" viewBox="0 0 100 100">
-          <circle cx="50" cy="18" r="7" fill="currentColor" stroke="none"/>
-          <path d="M50 28 V60" stroke-width="8"/>
-          <path d="M50 36 L28 16 M50 36 L72 16" stroke-width="5"/>
-          <path d="M50 60 L34 88 M50 60 L66 88" stroke-width="6"/>
+          <path d="M50 60 L34 88 M50 60 L66 88" stroke="#e8b48a" stroke-width="6"/>
+          <path d="M30 91 H41 M59 91 H70" stroke="#2a5db0" stroke-width="5"/>
+          <path d="M50 56 V63" stroke="#2a5db0" stroke-width="11"/>
+          <path d="M50 36 L28 16 M50 36 L72 16" stroke="#e8b48a" stroke-width="5"/>
+          <path d="M50 28 V57" stroke="#ff6f61" stroke-width="10"/>
+          <path d="M50 35 L44 29 M50 35 L56 29" stroke="#ff6f61" stroke-width="7"/>
+          <circle cx="50" cy="18" r="7" fill="#e8b48a"/>
+          <path d="M43 17 A7 7 0 0 1 57 17 Z" fill="#3b2a1a"/>
+          <path d="M47 21 Q50 24 53 21" stroke="#12262e" stroke-width="1.2"/>
         </svg>
       </div>
 
@@ -427,40 +533,73 @@
     <!-- FOOD -->
     <section id="food" class="food-bg">
       <!-- Yellow outline drawings: they sit BEHIND the text, like a background.
-           Order: paella, churros with chocolate, jamon, Spanish omelette. -->
+           Order: paella (with seafood), churros with 3 chocolates and coffee. -->
       <div class="food-art" aria-hidden="true">
-        <svg class="art-paella" viewBox="0 0 100 100">
-          <ellipse cx="50" cy="58" rx="38" ry="19"/>
-          <ellipse cx="50" cy="55" rx="30" ry="13"/>
-          <path d="M12 58 H2 M88 58 H98"/>
-          <circle cx="38" cy="53" r="4"/>
-          <circle cx="55" cy="49" r="4"/>
-          <circle cx="64" cy="58" r="4"/>
-          <path d="M40 34 q5 -6 0 -12 M56 34 q5 -6 0 -12"/>
-        </svg>
-        <svg class="art-churros" viewBox="0 0 100 100">
-          <g transform="rotate(-15 40 60)">
-            <rect x="14" y="20" width="11" height="60" rx="5.5"/>
-            <rect x="28" y="20" width="11" height="60" rx="5.5"/>
-            <rect x="42" y="20" width="11" height="60" rx="5.5"/>
-            <path d="M19.5 30 V70 M33.5 30 V70 M47.5 30 V70"/>
+        <svg class="art-paella" viewBox="0 0 120 120">
+          <defs>
+            <g id="shrimp">
+              <path d="M0 0 Q12 -12 24 -2 Q30 4 26 13" stroke="#ff8a65" stroke-width="7" stroke-linecap="round" fill="none"/>
+              <path d="M6 -3 Q13 -7 19 -3" stroke="#ffd2c2" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path d="M24 12 L33 14 L29 21 Z" fill="#ff7043"/>
+              <circle cx="3" cy="-2" r="1.6" fill="#12262e"/>
+            </g>
+          </defs>
+          <!-- pan: handles and body -->
+          <rect x="0" y="54" width="12" height="12" rx="4" fill="#4a4a4a"/>
+          <rect x="108" y="54" width="12" height="12" rx="4" fill="#4a4a4a"/>
+          <circle cx="60" cy="60" r="56" fill="#4a4a4a"/>
+          <!-- yellow rice -->
+          <circle cx="60" cy="60" r="47" fill="#f6c744"/>
+          <g fill="#e0a526"><circle cx="40" cy="48" r="1.4"/><circle cx="80" cy="46" r="1.4"/><circle cx="50" cy="76" r="1.4"/><circle cx="78" cy="74" r="1.4"/><circle cx="30" cy="64" r="1.4"/><circle cx="90" cy="62" r="1.4"/><circle cx="62" cy="36" r="1.4"/><circle cx="64" cy="90" r="1.4"/></g>
+          <!-- vegetables: red pepper strips and green peas -->
+          <g stroke="#d62839" stroke-width="4" stroke-linecap="round" fill="none"><path d="M78 28 L84 36"/><path d="M92 76 L84 84"/><path d="M44 100 L54 98"/><path d="M20 56 L24 66"/></g>
+          <g fill="#4caf50"><circle cx="52" cy="28" r="3"/><circle cx="92" cy="52" r="3"/><circle cx="72" cy="96" r="3"/><circle cx="22" cy="80" r="3"/><circle cx="46" cy="78" r="3"/><circle cx="72" cy="44" r="3"/></g>
+          <!-- squid rings: purple, pink and red, mixed -->
+          <g fill="none" stroke-width="3">
+            <circle cx="86" cy="40" r="5.5" stroke="#8e5fb5"/><circle cx="86" cy="40" r="2" stroke="#f08aa0" stroke-width="1.5"/>
+            <circle cx="26" cy="72" r="5.5" stroke="#f08aa0"/><circle cx="26" cy="72" r="2" stroke="#d62839" stroke-width="1.5"/>
+            <circle cx="60" cy="98" r="5.5" stroke="#d62839"/><circle cx="60" cy="98" r="2" stroke="#8e5fb5" stroke-width="1.5"/>
+            <circle cx="46" cy="36" r="5.5" stroke="#8e5fb5"/><circle cx="46" cy="36" r="2" stroke="#d62839" stroke-width="1.5"/>
           </g>
-          <path d="M62 58 h28 l-4 28 h-20 z"/>
-          <ellipse cx="76" cy="58" rx="14" ry="4"/>
+          <!-- shrimps -->
+          <use href="#shrimp" transform="translate(28 46) rotate(-30)"/>
+          <use href="#shrimp" transform="translate(62 20) rotate(20)"/>
+          <use href="#shrimp" transform="translate(88 64) rotate(100)"/>
+          <use href="#shrimp" transform="translate(34 92) rotate(-160)"/>
+          <!-- octopus in the middle -->
+          <g stroke="#8e5fb5" stroke-width="5" stroke-linecap="round" fill="none">
+            <path d="M52 64 Q40 70 42 80 Q44 86 50 82"/>
+            <path d="M56 66 Q54 78 60 84 Q66 88 66 80"/>
+            <path d="M64 66 Q72 76 80 72 Q86 70 84 64"/>
+            <path d="M68 60 Q80 56 80 48"/>
+            <path d="M52 52 Q42 46 44 38"/>
+          </g>
+          <circle cx="60" cy="58" r="9" fill="#8e5fb5"/>
+          <circle cx="57" cy="56" r="1.8" fill="#fff"/><circle cx="63" cy="56" r="1.8" fill="#fff"/>
+          <!-- lemon wedge on the edge of the pan -->
+          <path d="M86 18 A16 16 0 0 1 102 34 L86 34 Z" fill="#ffe45c" stroke="#e6c200" stroke-width="1.5"/>
         </svg>
-        <svg class="art-jamon" viewBox="0 0 100 100">
-          <path d="M28 72 C10 55 20 25 50 22 C76 20 90 40 80 58 C74 72 52 84 28 72 Z"/>
-          <path d="M28 72 L16 82"/>
-          <circle cx="12" cy="85" r="5"/>
-          <path d="M50 25 Q60 50 46 76"/>
-        </svg>
-        <svg class="art-tortilla" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="38"/>
-          <circle cx="50" cy="50" r="30"/>
-          <path d="M50 50 L84 38 M50 50 L82 68"/>
-          <circle cx="36" cy="40" r="3"/>
-          <circle cx="40" cy="62" r="3"/>
-          <circle cx="58" cy="30" r="3"/>
+        <svg class="art-churros" viewBox="0 0 210 110">
+          <!-- three golden churros with darker ridges -->
+          <g transform="rotate(-15 45 60)">
+            <rect x="16" y="22" width="13" height="66" rx="6.5" fill="#d9922e"/>
+            <rect x="32" y="22" width="13" height="66" rx="6.5" fill="#e3a23d"/>
+            <rect x="48" y="22" width="13" height="66" rx="6.5" fill="#d9922e"/>
+            <path d="M20.5 30 V80 M24.5 30 V80 M36.5 30 V80 M40.5 30 V80 M52.5 30 V80 M56.5 30 V80" stroke="#b8741c" stroke-width="1.6" stroke-linecap="round"/>
+          </g>
+          <!-- three cups: dark, milk and white chocolate -->
+          <path d="M70 58 h26 l-4 24 h-18 z" fill="#ffffff" stroke="#c9ced2" stroke-width="1.5"/>
+          <ellipse cx="83" cy="58" rx="13" ry="4" fill="#3b1e0e" stroke="#2a1409" stroke-width="1"/>
+          <path d="M98 58 h26 l-4 24 h-18 z" fill="#ffffff" stroke="#c9ced2" stroke-width="1.5"/>
+          <ellipse cx="111" cy="58" rx="13" ry="4" fill="#8a5530" stroke="#6e4224" stroke-width="1"/>
+          <path d="M126 58 h26 l-4 24 h-18 z" fill="#ffffff" stroke="#c9ced2" stroke-width="1.5"/>
+          <ellipse cx="139" cy="58" rx="13" ry="4" fill="#f3e3b8" stroke="#d9c58f" stroke-width="1"/>
+          <!-- coffee cup with steam -->
+          <ellipse cx="178" cy="87" rx="22" ry="4" fill="#e6e9eb" stroke="#c9ced2" stroke-width="1.2"/>
+          <path d="M192 62 Q206 62 206 72 Q206 80 191 80" stroke="#c9ced2" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M162 58 H194 V72 Q194 86 178 86 Q162 86 162 72 Z" fill="#ffffff" stroke="#c9ced2" stroke-width="1.5"/>
+          <ellipse cx="178" cy="58" rx="16" ry="4" fill="#5a3319"/>
+          <path d="M172 48 q-4 -8 0 -14 M184 48 q-4 -8 0 -14" stroke="#aab2b8" stroke-width="2" stroke-linecap="round" fill="none"/>
         </svg>
       </div>
 
@@ -539,6 +678,19 @@
         <svg class="coral coral-8" viewBox="0 0 100 100" aria-hidden="true">
           <path d="M50 95 V55 M50 78 L32 62 M50 70 L68 56 M50 55 L42 40 M50 55 L58 40" stroke="#f2c230" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
         </svg>
+        <svg class="crab" viewBox="0 0 100 70" aria-hidden="true">
+          <path d="M32 44 L16 52 L10 62 M34 48 L20 58 L16 68 M68 44 L84 52 L90 62 M66 48 L80 58 L84 68 M30 34 L16 26 M70 34 L84 26" stroke="#e8553d" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <ellipse cx="50" cy="40" rx="24" ry="16" fill="#e8553d"/>
+          <path d="M16 26 Q4 20 8 8 Q14 14 20 10 Q22 18 16 26 Z" fill="#e8553d"/>
+          <path d="M84 26 Q96 20 92 8 Q86 14 80 10 Q78 18 84 26 Z" fill="#e8553d"/>
+          <path d="M42 26 V19 M58 26 V19" stroke="#e8553d" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="42" cy="16" r="3.5" fill="#fff"/><circle cx="58" cy="16" r="3.5" fill="#fff"/>
+          <circle cx="42" cy="16" r="1.5" fill="#12262e"/><circle cx="58" cy="16" r="1.5" fill="#12262e"/>
+        </svg>
+        <svg class="starfish" viewBox="0 0 100 100" aria-hidden="true">
+          <polygon points="50,10 60,38 90,39 66,57 75,86 50,69 25,86 34,57 10,39 40,38" fill="#f28c5b" stroke="#f28c5b" stroke-width="6" stroke-linejoin="round"/>
+          <g fill="#ffd9b8"><circle cx="50" cy="28" r="2.5"/><circle cx="74" cy="45" r="2.5"/><circle cx="66" cy="72" r="2.5"/><circle cx="34" cy="72" r="2.5"/><circle cx="26" cy="45" r="2.5"/><circle cx="50" cy="52" r="3"/></g>
+        </svg>
         <svg class="fish fish-1" viewBox="0 0 140 60" aria-hidden="true">
           <path d="M50 14 Q64 1 84 14 Z" fill="#f28c38"/>
           <ellipse cx="62" cy="30" rx="50" ry="19" fill="#f28c38"/>
@@ -601,7 +753,7 @@
     <section id="sports" class="sports-bg">
       <!-- Orange outline drawings behind the text, like in Food.
            Order: pickleball paddle, pickleball ball, volleyball, volleyball net,
-           pull-up, push-up, sit-up, football player. -->
+           pull-up, push-up, sit-up. -->
       <div class="sports-art" aria-hidden="true">
         <svg class="art-paddle" viewBox="0 0 100 100">
           <g transform="rotate(-25 50 50)">
@@ -668,16 +820,6 @@
           <path d="M40 80 L68 58 L80 86" stroke-width="8"/>
           <path d="M22 76 Q20 56 32 42" stroke-width="2.5"/>
         </svg>
-        <svg class="art-football" viewBox="0 0 100 100">
-          <path d="M6 92 H94" stroke-width="2.5"/>
-          <circle cx="46" cy="16" r="7" fill="#ef8a3c" stroke="none"/>
-          <path d="M46 26 L44 56" stroke-width="11"/>
-          <path d="M45 32 L26 42 M45 32 L68 26" stroke-width="5"/>
-          <path d="M44 56 L40 90" stroke-width="8"/>
-          <path d="M44 56 L62 70 L76 62" stroke-width="8"/>
-          <circle cx="88" cy="58" r="8" stroke-width="2.5"/>
-          <path d="M88 53 L92 56 L90.5 61 H85.5 L84 56 Z" fill="#ef8a3c" stroke="none"/>
-        </svg>
       </div>
 
       <div class="text-block">
@@ -711,8 +853,6 @@
       <a href="sports/sports5.jpg"><img src="sports/sports5.jpg" onerror="this.parentElement.style.display='none'" alt="Sports in Santa Pola, photo 5"></a>
       <a href="sports/sports6.jpg"><img src="sports/sports6.jpg" onerror="this.parentElement.style.display='none'" alt="Sports in Santa Pola, photo 6"></a>
     </div>
-
-
 
   </main>
 
